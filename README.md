@@ -1,28 +1,35 @@
-# acronis-support-lab
-Hands-on troubleshooting lab documenting Acronis Cyber Protect Cloud agent installation, Windows diagnostics, networking tests, VSS analysis, and KCS-style articles. Built as preparation for Acronis Cloud Support (Tier 1) interview.
+# Acronis Support Lab
 
-acronis-support-lab/
-│
-├── lab-setup/
-│   ├── windows-server-setup.md
-│   ├── acronis-agent-installation.md
-│   └── network-tests.md
-│
-├── troubleshooting-scenarios/
-│   ├── vss-basics.md
-│   ├── vss-writer-failure.md
-│   ├── service-error-1067.md
-│   ├── agent-offline.md
-│   └── backup-connectivity-failure.md
-│
-├── kcs-articles/
-│   ├── how-to-fix-vss-writer-failure.md
-│   ├── how-to-troubleshoot-service-1067.md
-│   └── how-to-check-agent-connectivity.md
-│
-├── scripts/
-│   ├── collect-acronis-logs.ps1
-│   ├── agent-health-check.ps1
-│   └── curl-connectivity-check.sh
-│
-└── README.md
+A hands-on troubleshooting lab built to prepare for **Cloud Support (Tier 1)** at Acronis.  
+This repository documents end-to-end diagnostic workflows, real OS and agent issues, and structured troubleshooting that aligns with frontline support expectations.
+
+---
+
+## 📌 What This Repo Includes
+
+| Area | Description |
+|------|-------------|
+| **Lab Setup** | Instructions for building a reproducible Windows Server lab |
+| **Troubleshooting Scenarios** | Real-world error patterns + solutions |
+| **KCS-style Articles** | Short knowledge artifacts following KCS discipline |
+| **Scripts** | Simple collection / evidence gathering scripts |
+| **Standards & Methods** | Structured troubleshooting methodology |
+
+---
+
+## 🎯 Why This Matters
+
+This repository demonstrates:
+
+- Structured troubleshooting process
+- OS and agent diagnostic skills
+- Networking & connectivity analysis
+- Evidence collection and documentation
+- Communication readiness for customer support
+
+> Build, test, fix, and document — the workflow used by frontline engineers.
+
+---
+
+## 📂 Repository Structure
+

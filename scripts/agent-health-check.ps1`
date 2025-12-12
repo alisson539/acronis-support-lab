@@ -1,0 +1,75 @@
+
+---
+
+# 🟩 FILE 2 — `scripts/agent-health-check.ps1`
+
+This script is designed to:
+
+- Check Acronis services status  
+- Check VSS writers  
+- Check network connectivity  
+- Check TLS handshake  
+- Output results in a support-friendly format  
+
+It mimics what Tier 1 engineers often gather before escalation.
+
+Copy/paste into:
+
+`/scripts/agent-health-check.ps1`
+
+---
+
+```powershell
+<#  
+Acronis Agent Health Check Script  
+Collects basic diagnostics for Tier 1 support, including:
+- Acronis service status
+- VSS writer state
+- DNS + HTTPS connectivity
+- TLS handshake test
+#>
+
+$OutputPath = "C:\temp\agent_health_check"
+New-Item -Path $OutputPath -ItemType Directory -Force | Out-Null
+
+Write-Output "=== Acronis Agent Health Check ==="
+Write-Output "Saving results to $OutputPath"
+Write-Output ""
+
+# --- 1. Acronis Services ---
+Write-Output "[1] Checking Acronis services..."
+Get-Service | Where-Object {$_.DisplayName -like "Acronis*"} |
+    Select-Object Status, Name, DisplayName |
+    Tee-Object -FilePath "$OutputPath\services.txt"
+
+# --- 2. VSS Writers ---
+Write-Output "`n[2] Checking VSS writers..."
+vssadmin list writers |
+    Tee-Object -FilePath "$OutputPath\vss-writers.txt"
+
+# --- 3. DNS Resolution ---
+Write-Output "`n[3] Testing DNS resolution..."
+$dnsTest = nslookup google.com 2>&1
+$dnsTest | Tee-Object -FilePath "$OutputPath\dns.txt"
+
+# --- 4. HTTPS Connectivity ---
+Write-Output "`n[4] Testing HTTPS connectivity..."
+try {
+    $curlTest = Invoke-WebRequest -Uri "https://google.com" -UseBasicParsing -TimeoutSec 10
+    "HTTPS connection: SUCCESS" | Tee-Object -FilePath "$OutputPath\https.txt"
+} catch {
+    "HTTPS connection: FAILED" | Tee-Object -FilePath "$OutputPath\https.txt"
+    $_ | Out-File "$OutputPath\https_error.txt"
+}
+
+# --- 5. TLS Handshake Test ---
+Write-Output "`n[5] Testing TLS handshake..."
+try {
+    $tlsTest = openssl s_client -connect google.com:443 -servername google.com 2>&1
+    $tlsTest | Out-File "$OutputPath\tls.txt"
+} catch {
+    "TLS handshake failed." | Out-File "$OutputPath\tls.txt"
+}
+
+Write-Output "`nHealth check complete."
+Write-Output "Logs saved in: $OutputPath"
